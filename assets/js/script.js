@@ -5,11 +5,19 @@ var pageContentEl = document.querySelector("#page-content");
 var tasksInProgressEl = document.querySelector("#tasks-in-progress");
 var tasksCompletedEl = document.querySelector("#tasks-completed");
 
+
 var taskFormHandler = function(event) {
     event.preventDefault();
     var taskNameInput = document.querySelector("input[name='task-name']").value;
     var taskTypeInput = document.querySelector("select[name='task-type']").value;
-
+    
+    // check if input values are empty strings
+    if (!taskNameInput || !taskTypeInput) {
+        alert("You need to fill out the task form!");
+        return false;
+    }
+    
+    
     var isEdit = formEl.hasAttribute("data-task-id");
     
     // has data attribute, so get task id and call function to complete edit process
@@ -23,18 +31,14 @@ var taskFormHandler = function(event) {
             name: taskNameInput,
             type: taskTypeInput
         };
+        createTaskEl(taskDataObj);
     }
 
-    // check if input values are empty strings
-    if (!taskNameInput || !taskTypeInput) {
-        alert("You need to fill out the task form!");
-        return false;
-    }
 
     formEl.reset();
     // send it as an argument to createTaskel
-    createTaskEl(taskDataObj);
 };
+
 
 var createTaskEl = function(taskDataObj) {
     // create list item
@@ -62,6 +66,8 @@ var createTaskEl = function(taskDataObj) {
     // increae the task counter for the next unique id
     taskIdCounter++;
 };
+
+
 
 var createTaskActions = function(taskId) {
     var actionContainerEl = document.createElement("div");
@@ -131,6 +137,7 @@ var deleteTask = function(taskId) {
     taskSelected.remove();
 };
 
+
 var editTask = function(taskId) {
 
     // get task list item element
@@ -145,6 +152,8 @@ var editTask = function(taskId) {
     formEl.setAttribute("data-task-id", taskId);
 }
 
+
+
 var completeEditTask = function(taskName, taskType, taskId) {
     // find the matching task list item
     var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
@@ -158,6 +167,10 @@ var completeEditTask = function(taskName, taskType, taskId) {
     formEl.removeAttribute("data-task-id");
     document.querySelector("#save-task").textContent = "Add Task";
 };
+
+
+
+
 
 var taskStatusChangeHandler = function(event) {
     console.log(event.target, event.target.getAttribute("data-task-id"));
