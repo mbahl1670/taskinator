@@ -70,6 +70,7 @@ var createTaskEl = function(taskDataObj) {
 
     // increae the task counter for the next unique id
     taskIdCounter++;
+    saveTasks();
 };
 
 
@@ -154,6 +155,7 @@ var deleteTask = function(taskId) {
 
     // reassign tasks array to be the same as updatedTaskArr
     tasks = updatedTaskArr;
+    saveTasks();
 };
 
 
@@ -193,6 +195,7 @@ var completeEditTask = function(taskName, taskType, taskId) {
 
     formEl.removeAttribute("data-task-id");
     document.querySelector("#save-task").textContent = "Add Task";
+    saveTasks();
 };
 
 
@@ -200,7 +203,6 @@ var completeEditTask = function(taskName, taskType, taskId) {
 
 
 var taskStatusChangeHandler = function(event) {
-    console.log(event.target, event.target.getAttribute("data-task-id"));
     // get the task item's id
     var taskId = event.target.getAttribute("data-task-id");
 
@@ -210,8 +212,6 @@ var taskStatusChangeHandler = function(event) {
     
     // find the parent task item element based on the id
     var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
-    console.log(taskSelected);
-    
 
     if (statusValue === "to do") {
         tasksToDoEl.appendChild(taskSelected);
@@ -231,6 +231,10 @@ var taskStatusChangeHandler = function(event) {
     }
     
 
+};
+
+var saveTasks = function() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
 };
 
 
